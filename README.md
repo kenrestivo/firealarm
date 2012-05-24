@@ -1,18 +1,18 @@
 # firealarm
 
-A middleware  to alert you if your Noir app stacktraces.
+A middleware to alert you if your Noir app stacktraces.
 
 ## Why???
 
-Very much a personal itch, but others may find  it useful too.
+Very much a personal itch, but others may find it useful too.
 
-To avoid having to put my SMTP email credentials out onto cloud hosting sites like Heroku for customer apps I might want to monitor, and which might be later maintained by others anyway.
+Clojure webapps don't seem to 500 very often, probably due to immutable data, managing state sanely, compiliation, and functional programming. Still, I sleep better knowing that I'd find out about any explosions early and in detail, via email and possibly SMS.
 
-I have a web host which allows me to send some low-volume email, so I needed a way to POST the message as a web form, and have it relay that to me.
+Email is good, but I don't like giving out my GMail credentials, and I have a web host which allows me to send some low-volume email, so I needed a way to POST the message as a web form, and have it relay that to me.
 
-Also I'd like to add Jabber and SMS capability too, and proper SMTP email as well.
+I'd like to add Jabber and SMS capability too in the future, and proper SMTP email as well.
 
-In dev mode, I like to have a text file with stacktraces; I keep it  open in emacs and auto-revert-mode it. Java stacktraces are so long, it's helpful to have just the LAST error message and not a huge log to scroll through to find the most recennt one.
+In dev mode, I like to have a text file with stacktraces; I keep it  open in emacs and auto-revert-mode it. JVM stacktraces are so long, it's helpful to have just the LAST error message and not a huge log to scroll through to find the most recennt one.
 
 
 ## Usage
