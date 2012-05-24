@@ -38,7 +38,7 @@ etc
 In the server.clj of your noir project:
 
 ```clojure
-(:require firealarm)
+(:require firealarm.core :as firealarm)
 
 ```
 
