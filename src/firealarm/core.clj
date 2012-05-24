@@ -21,7 +21,7 @@
                               (str "Error: "
                                    (get (System/getenv) "FIREALARM_SITENAME"))
                               :body body
-                              :token (get (System/getenv) "FIREALARM_TOKEN")}}))
+                              :token (get (System/getenv) "FIREALARM_POST_TOKEN")}}))
 
 
 (defn email-reporter

@@ -2,21 +2,58 @@
 
 A middleware  to alert you if your Noir app stacktraces.
 
+## Why???
+
+Very much a personal itch, but others may find  it useful too.
+
+To avoid having to put my SMTP email credentials out onto cloud hosting sites like Heroku for customer apps I might want to monitor, and which might be later maintained by others anyway.
+
+I have a web host which allows me to send some low-volume email, so I needed a way to POST the message as a web form, and have it relay that to me.
+
+Also I'd like to add Jabber and SMS capability too, and proper SMTP email as well.
+
+In dev mode, I like to have a text file with stacktraces; I keep it  open in emacs and auto-revert-mode it. Java stacktraces are so long, it's helpful to have just the LAST error message and not a huge log to scroll through to find the most recennt one.
+
+
 ## Usage
+
+In Lein:
+```clojure
+["firealarm" "0.1.0-SNAPSHOT"]
+```
 
 Set up your email/settings in ENV variables (so that it'll work on Heroku, etc).
 
-Compose together which alert mechanisms you want for which mode (:dev or :prod).
 
-In your server.clj, add middleware.
+FIREALARM_SITENAME
+
+If you're using the POST method:
+
+FIREALARM_POST_URL
+FIREALARM_POST_TOKEN
+
+etc
+
+
+In the server.clj of your noir project:
 
 ```clojure
-(server/add-middleware (exception-wrapper mode))
+(:require firealarm)
+
 ```
 
-## Warnings
 
-Work in progress, this is very rough.
+(soon, TODO) Compose together which alert mechanisms you want for which mode (:dev or :prod).
+
+In your server.clj, add the middleware.
+
+```clojure
+(server/add-middleware (firealarm/exception-wrapper mode))
+```
+
+## Status
+
+Work in progress, this is very rough early alpha. But, it works, and I'm using it already.
 
 ## License
 
