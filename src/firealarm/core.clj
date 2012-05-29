@@ -32,7 +32,8 @@
   [mode]
   (let [reporter (case mode
                    :dev file-reporter
-                   :prod post-reporter)]
+                   :prod post-reporter
+                   (throw (Exception. "Mode must be either :dev or :prod")))]
     (fn wrap-exception
       [handler]
       (fn [request]

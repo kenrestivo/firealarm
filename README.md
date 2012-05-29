@@ -44,7 +44,7 @@ In the server.clj of your noir project:
 
 (soon, TODO) Compose together which alert mechanisms you want for which mode (:dev or :prod).
 
-In your server.clj, add the middleware.
+In your server.clj, inside your -main function, add the middleware immediately before the (server/start ...) line:
 
 ```clojure
 (server/add-middleware (firealarm/exception-wrapper mode))
