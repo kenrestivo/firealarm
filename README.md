@@ -52,7 +52,8 @@ In your server.clj, inside your -main function, add the middleware immediately b
 
 ## Status
 
-Work in progress, this is very rough early alpha. But, it works, and I'm using it already.
+Work in progress, this is very rough early alpha. But, it works, and I'm using it already. See TO-DO.org file for more.
+
 
 ## License
 

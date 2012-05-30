@@ -1,0 +1,5 @@
+TO DO for firealarm
+
+* add-middleware is the wrong place, it's too late in the wrap
+** if there are problems with session, or cookies, or routing, it won't wrap!
+** TODO try shoving it into pre-route or somewhere similar?
