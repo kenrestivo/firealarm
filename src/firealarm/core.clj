@@ -29,11 +29,12 @@
 ;;; TODO: allow juxting several of these to compose them nicely
 
 (defn exception-wrapper
+  "mode is :dev by default in jetty/noir.
+   It's $PORT by default on Heroku. Accept that."
   [mode]
-  (let [reporter (case mode
-                   :dev file-reporter
-                   :prod post-reporter
-                   (throw (Exception. "Mode must be either :dev or :prod")))]
+  (let [reporter (if (= mode :dev)
+                   file-reporter
+                   post-reporter)]
     (fn wrap-exception
       [handler]
       (fn [request]
