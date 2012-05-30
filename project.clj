@@ -1,4 +1,4 @@
-(defproject firealarm "0.1.1"
+(defproject firealarm "0.1.1-SNAPSHOT"
   :description "A middleware for sending stacktraces from Noir apps"
   :url "http://github.com/kenrestivo/firealarm"
   :license {:name "Eclipse Public License"
