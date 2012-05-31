@@ -18,7 +18,7 @@ Rather than add email, SMS, or Jabber to this library, it's easy enough to do in
 
 In Lein:
 ```clojure
-["firealarm" "0.1.0"]
+["firealarm" "0.1.1"]
 ```
 
 Set up your email/settings in ENV variables (so that it'll work on Heroku, etc).
