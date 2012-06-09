@@ -28,8 +28,8 @@ FIREALARM_SITENAME=yoursite.com
 
 If you're using the POST method:
 
-FIREALARM_POST_URL
-FIREALARM_POST_TOKEN
+FIREALARM_POST_URL=http://somewhere.com/postme
+FIREALARM_POST_TOKEN=sometoken
 
 etc
 
