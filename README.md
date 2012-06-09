@@ -24,7 +24,7 @@ In Lein:
 Set up your email/settings in ENV variables (so that it'll work on Heroku, etc).
 
 
-FIREALARM_SITENAME
+FIREALARM_SITENAME=yoursite.com
 
 If you're using the POST method:
 
