@@ -9,18 +9,18 @@
 
 (defn file-reporter
   "Simple file dump, overwrites whatever was there previously.
-   The function returns its body arg, so they can be composed"
+   Takes the path to the file."
   [file-path]
   (fn [body]
-    (spit file-path body)
-    body))
+    (spit file-path body)))
+
 
 
 (defn post-reporter
   "Generates function to posts the error to another website,
-   so that it can send email.
-   In cases where you might not want your GMail password out in the open.
-   The function returns its body arg, so they can be composed"
+   so that it can send email, in cases where you might not want your
+   GMail password out in the open.
+   Takes url to post to, name of site to report, and a token."
   [post-url site-name post-token]
   (fn [body]
     (send-off
@@ -31,14 +31,13 @@
                      {:subject
                       (str "Error: " site-name)
                       :body body
-                      :token post-token}})))
-    body))
+                      :token post-token}})))))
+    
 
 
 
 (defn exception-wrapper
-  "mode is :dev by default in jetty/noir.
-   It's $PORT by default on Heroku. Accept that."
+  "Wraps exceptions by calling the reporter function given."
   [reporter]
   (fn wrap-exception
     [handler]
