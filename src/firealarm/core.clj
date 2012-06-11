@@ -5,45 +5,50 @@
   (:use [clojure.pprint :only [pprint]]))
 
 
+(def sender (agent {} :error-mode :continue))
 
 (defn file-reporter
-  "Simple file dump, overwrites whatever was there previously."
-  [body]
-  (spit "/tmp/noir-error.log" body))
+  "Simple file dump, overwrites whatever was there previously.
+   The function returns its body arg, so they can be composed"
+  [file-path]
+  (fn [body]
+    (spit file-path body)
+    body))
 
 
 (defn post-reporter
-  "Posts the error to another website, so that it can send email.
-   In cases where you might not want your GMail password out in the open."
-  [body]
-  (client/post (get (System/getenv) "FIREALARM_POST_URL")
-               {:form-params
-                {:subject
-                 (str "Error: "
-                      (get (System/getenv) "FIREALARM_SITENAME"))
-                 :body body
-                 :token (get (System/getenv) "FIREALARM_POST_TOKEN")}}))
+  "Generates function to posts the error to another website,
+   so that it can send email.
+   In cases where you might not want your GMail password out in the open.
+   The function returns its body arg, so they can be composed"
+  [post-url site-name post-token]
+  (fn [body]
+    (send-off
+     sender
+     (fn [_]
+       (client/post post-url
+                    {:form-params
+                     {:subject
+                      (str "Error: " site-name)
+                      :body body
+                      :token post-token}})))
+    body))
 
 
-
-;;; TODO: allow juxting several of these to compose them nicely
 
 (defn exception-wrapper
   "mode is :dev by default in jetty/noir.
    It's $PORT by default on Heroku. Accept that."
-  [mode]
-  (let [reporter (if (= mode :dev)
-                   file-reporter
-                   post-reporter)]
-    (fn wrap-exception
-      [handler]
-      (fn [request]
-        (try
-          (handler request)
-          (catch Throwable e
-            (reporter (str ( -> (Calendar/getInstance) .getTime .toString)
-                           "\n"
-                           (with-out-str  (cst/pst e)
-                             (pprint request))))
-            (throw e)))))))
+  [reporter]
+  (fn wrap-exception
+    [handler]
+    (fn [request]
+      (try
+        (handler request)
+        (catch Throwable e
+          (reporter (str ( -> (Calendar/getInstance) .getTime .toString)
+                         "\n"
+                         (with-out-str  (cst/pst e)
+                           (pprint request))))
+          (throw e))))))
 

@@ -18,21 +18,8 @@ Rather than add email, SMS, or Jabber to this library, it's easy enough to do in
 
 In Lein:
 ```clojure
-["firealarm" "0.1.1"]
+["firealarm" "0.1.2"]
 ```
-
-Set up your email/settings in ENV variables (so that it'll work on Heroku, etc).
-
-
-FIREALARM_SITENAME=yoursite.com
-
-If you're using the POST method:
-
-FIREALARM_POST_URL=http://somewhere.com/postme
-FIREALARM_POST_TOKEN=sometoken
-
-etc
-
 
 In the server.clj of your noir project:
 
@@ -41,13 +28,25 @@ In the server.clj of your noir project:
 
 ```
 
+In server.clj, create the function to do the reporting, as such
 
-(soon, TODO) Compose together which alert mechanisms you want for which mode (:dev or :prod).
+```clojure
+(def reporter (firealarm/post-reporter "http://somewhere.com/report" "name of site" "token"))
+```
+
+You can also compose them together, like so:
+
+
+```clojure
+(def reporter (juxt
+     (firealarm/post-reporter "http://somewhere.com/report" "name of site" "token")
+    (firealarm/file-reporter "/tmp/noir-error.log")))
+```
 
 In your server.clj, inside your -main function, add the middleware immediately before the (server/start ...) line:
 
 ```clojure
-(server/add-middleware (firealarm/exception-wrapper mode))
+(server/add-middleware (firealarm/exception-wrapper reporter))
 ```
 
 ## Status
