@@ -1,6 +1,6 @@
 # firealarm
 
-A very simple middleware to alert you if your Noir app stacktraces.
+A very simple middleware to alert you if your Ring-based (Noir, Compojure, etc) app stacktraces.
 
 ## Why???
 
@@ -21,7 +21,7 @@ In Lein:
 [firealarm "0.1.2"]
 ```
 
-In the server.clj of your noir project:
+In the server.clj of your web project:
 
 ```clojure
 (require '[firealarm.core :as firealarm])
@@ -43,11 +43,19 @@ You can also compose them together, like so:
     (firealarm/file-reporter "/tmp/noir-error.log")))
 ```
 
-In your server.clj, inside your -main function, add the middleware immediately before the (server/start ...) line:
+If you're using Noir, in your server.clj, inside your -main function, add the middleware immediately before the (server/start ...) line:
 
 ```clojure
 (server/add-middleware (firealarm/exception-wrapper reporter))
 ```
+
+If you're using Compojure and Ring without Noir, you can generate the handler and apply it like so:
+
+```clojure
+(def wrap-exception (firealarm/exception-wrapper reporter))
+(def app (wrap-exception handler))
+```
+
 
 ## Status
 
