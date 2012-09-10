@@ -18,7 +18,7 @@ Rather than add email, SMS, or Jabber to this library, it's easy enough to do in
 
 In Lein:
 ```clojure
-["firealarm" "0.1.2"]
+[firealarm "0.1.2"]
 ```
 
 In the server.clj of your noir project:
