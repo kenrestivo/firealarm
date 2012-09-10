@@ -24,7 +24,7 @@ In Lein:
 In the server.clj of your noir project:
 
 ```clojure
-(:require firealarm.core :as firealarm)
+(require '[firealarm.core :as firealarm])
 
 ```
 
