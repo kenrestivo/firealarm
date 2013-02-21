@@ -1,6 +1,6 @@
 # firealarm
 
-A very simple middleware to alert you if your Ring-based (Noir, Compojure, etc) app stacktraces.
+A very simple middleware to alert you if your Ring-based (Compojure, etc) app stacktraces.
 
 ## Why???
 
@@ -10,9 +10,11 @@ Clojure webapps don't seem to 500 very often, probably due to immutable data, ma
 
 Since I have a web host which allows me to send some low-volume email, I could make do just POSTing the message as a web form to my web host, and have it relay that to me.
 
+I could also use Simple Email Service or just SMTP too.
+
 In dev mode, I like to have a text file with stacktraces; I keep it  open in emacs and auto-revert-mode it. JVM stacktraces are long, so it's helpful to have just the LAST error message and not a huge log to scroll through to find the most recennt one.
 
-Rather than add email, SMS, or Jabber to this library, it's easy enough to do in a function that takes a body and sends it along.
+Rather than add email, SMS, or Jabber to this library, it's easy enough to do in a function that takes a body and sends it along. Send that function to firealarm/exception-wrapper and you are set.
 
 ## Usage
 
@@ -40,21 +42,16 @@ You can also compose them together, like so:
 ```clojure
 (def reporter (juxt
      (firealarm/post-reporter "http://somewhere.com/report" "name of site" "token")
-    (firealarm/file-reporter "/tmp/noir-error.log")))
+    (firealarm/file-reporter "/tmp/web-error.log")))
 ```
 
-If you're using Noir, in your server.clj, inside your -main function, add the middleware immediately before the (server/start ...) line:
-
-```clojure
-(server/add-middleware (firealarm/exception-wrapper reporter))
-```
-
-If you're using Compojure and Ring without Noir, you can generate the handler and apply it like so:
+If you're using a Ring-based stack, you can generate the handler and apply it like so:
 
 ```clojure
 (def wrap-exception (firealarm/exception-wrapper reporter))
 (def app (wrap-exception handler))
 ```
+
 
 
 ## Status
