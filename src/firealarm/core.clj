@@ -25,14 +25,13 @@
   (fn [body]
     (send-off
      sender
-     (fn [_]
+     (fn [_] ;; ignore previous agent state
        (client/post post-url
                     {:form-params
-                     {:subject
-                      (str "Error: " site-name)
+                     {:subject (str "Error: " site-name)
                       :body body
                       :token post-token}})))))
-    
+
 
 
 
@@ -45,9 +44,10 @@
       (try
         (handler request)
         (catch Throwable e
-          (reporter (str ( -> (Calendar/getInstance) .getTime .toString)
+          (reporter (str (-> (Calendar/getInstance) .getTime .toString)
                          "\n"
-                         (with-out-str  (cst/pst e)
-                           (pprint request))))
+                         (with-out-str (cst/pst e))
+                         (with-out-str (->> request :body pprint))
+                         (with-out-str (pprint request))))
           (throw e))))))
 
