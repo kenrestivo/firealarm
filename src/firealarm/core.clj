@@ -1,6 +1,6 @@
 (ns firealarm.core
   (:import java.util.Calendar java.text.SimpleDateFormat )
-  (:require [clj-stacktrace.repl :as cst]
+  (:require [io.aviso.exception :as aviso]
             [clj-http.client :as client])
   (:use [clojure.pprint :only [pprint]]))
 
@@ -46,7 +46,7 @@
         (catch Throwable e
           (reporter (str (-> (Calendar/getInstance) .getTime .toString)
                          "\n"
-                         (with-out-str (cst/pst e))
+                         (with-out-str (aviso/format-exception e))
                          (with-out-str (->> request :body pprint))
                          (with-out-str (pprint request))))
           (throw e))))))
